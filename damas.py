@@ -21,5 +21,6 @@ while (movimiento != '00'):
     listaB.append(movimiento)
 
 
+
 print (listaA)
 print (listaB)
