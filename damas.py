@@ -13,18 +13,18 @@
 
 
 #Definicion de variables
-tablero = [['-', 'b', '-', 'b', '-', 'b', '-', 'b'],
-           ['b', '-', 'b', '-', 'b', '-', 'b', '-'],
-           ['-', 'b', '-', 'b', '-', 'b', '-', 'b'],
-           ['-', '-', '-', '-', '-', '-', '-', '-'],
-           ['-', '-', '-', '-', '-', '-', '-', '-'],
+tablero = [['-', 'n', '-', 'n', '-', 'n', '-', 'n'],
            ['n', '-', 'n', '-', 'n', '-', 'n', '-'],
            ['-', 'n', '-', 'n', '-', 'n', '-', 'n'],
-           ['n', '-', 'n', '-', 'n', '-', 'n', '-']]
+           ['-', '-', '-', '-', '-', '-', '-', '-'],
+           ['-', '-', '-', '-', '-', '-', '-', '-'],
+           ['b', '-', 'b', '-', 'b', '-', 'b', '-'],
+           ['-', 'b', '-', 'b', '-', 'b', '-', 'b'],
+           ['b', '-', 'b', '-', 'b', '-', 'b', '-']]
 
 letras = {"A": 0, "B": 1, "C": 2, "D": 3, "E": 4, "F": 5, "G": 6, "H": 7}
 movimientoValido = True
-jugador = 'b'
+jugador = 'n'
 
 
 
@@ -92,47 +92,76 @@ def moValido(jugada, colorJugador):
             else:
                 return False
 
+def convertirDama(coordenadas, ficha):
+
+    if (coordenadas[0] == '7') and (ficha == 'n'):
+        tablero[int(coordenadas[0])][int(coordenadas[1])] = 'N'
+    elif (coordenadas[0] == '0') and (ficha == 'b'):
+        tablero[int(coordenadas[0])][int(coordenadas[1])] = 'B'
+
 def moverFicha (jugada, colorJugada):
     movOriRow=letras[jugada[0].upper()]
     movOriCol=int(jugada[1])-1
     movDesRow=letras[jugada[2].upper()]
     movDesCol=int(jugada[3])-1
+    coordenadasFicha = ''
 
     fichaOrigen = tablero[movOriRow][movOriCol]
-    print 'Imprimo la ficha origen ' + fichaOrigen
-
     fichaDestino = tablero [movDesRow][movDesCol]
-    print 'Imprimo la ficha destino ' + fichaDestino
-
 
     if fichaDestino == '-':
         tablero[movDesRow][movDesCol] = fichaOrigen
         tablero[movOriRow][movOriCol] = '-'
+        coordenadasFicha = str(movDesRow)+str(movDesCol)
 
-    elif fichaDestino != colorJugada:
-
+    elif fichaDestino != colorJugada or fichaDestino != colorJugada.upper():
         tablero[movOriRow][movOriCol] = '-'
+        tablero[movDesRow][movDesCol] = '-'
         if movDesRow < movOriRow:
             if movDesCol < movOriCol:
                 tablero[movDesRow - 1][movDesCol - 1] = fichaOrigen
+                coordenadasFicha = str(movDesRow - 1)+str(movDesCol - 1)
 
             else:
-               tablero[movDesRow - 1][movDesCol + 1] = fichaOrigen
+                tablero[movDesRow - 1][movDesCol + 1] = fichaOrigen
+                coordenadasFicha = str(movDesRow - 1)+str(movDesCol + 1)
 
         else:
             if movDesCol < movOriCol:
                 tablero[movDesRow + 1][movDesCol - 1] = fichaOrigen
+                coordenadasFicha = str(movDesRow + 1)+str(movDesCol - 1)
 
             else:
                 tablero[movDesRow + 1][movDesCol + 1] = fichaOrigen
+                coordenadasFicha = str(movDesRow + 1)+str(movDesCol + 1)
+
+    print 'Estas son las coordenadas de la ficha: '+coordenadasFicha
+    convertirDama(coordenadasFicha, fichaOrigen)
 
 
 print 'Bienvenidos al juego de las damas'
-print 'Comienzan las blancas'
+print tablero[7]
+print tablero[6]
+print tablero[5]
+print tablero[4]
+print tablero[3]
+print tablero[2]
+print tablero[1]
+print tablero[0]
+
+
+print '\n'
 
 while movimientoValido:
 
-    movimiento = raw_input()
+    if (jugador == 'n'):
+        jugador = 'b'
+        movimiento = raw_input('Mueven las blancas: ')
+
+    else:
+        jugador = 'n'
+        movimiento = raw_input('Mueven las negras: ')
+
 
     if  moValido(movimiento, jugador):
         movimientoValido = True
