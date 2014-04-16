@@ -37,33 +37,36 @@ def moValido(jugada, colorJugador):
     numero = 0
 
     if jugada[0].upper() not in letras:
-        print numero
+        print numero + 1
         return False
 
     elif jugada[2].upper() not in letras:
-        print numero
+        print numero + 2
         return False
 
-    elif jugada[1] > 8 or jugada[1] < 1:
-        print numero
+    elif int (jugada[1]) > 8 or int (jugada[1]) < 1:
+        print numero + 3
         return False
 
-    elif jugada[3] > 8 or jugada[3] < 1:
-        print numero
+    elif int (jugada[3]) > 8 or int (jugada[3]) < 1:
+        print numero + 4
         return False
+
 
     else:
-        movOriRow=letras[jugada[0]]
+        movOriRow=letras[jugada[0].upper()]
         movOriCol=int(jugada[1])-1
-        movDesRow=letras[jugada[2]]
+        movDesRow=letras[jugada[2].upper()]
         movDesCol=int(jugada[3])-1
 
         if tablero[movOriRow][movOriCol] == 0:
+            print numero + 5
             return False
 
         ficha = tablero[movOriRow][movOriCol]
 
         if ficha != colorJugador:
+            print numero + 6
             return False
 
         if (ficha == 'N') or (ficha == 'B'):
@@ -80,6 +83,8 @@ def moValido(jugada, colorJugador):
                 fichaDestino = tablero[movDesRow][movDesCol]
 
                 if fichaDestino == ficha:
+
+                    print numero + 7
                     return False
 
                 return True
@@ -88,13 +93,17 @@ def moValido(jugada, colorJugador):
                 return False
 
 def moverFicha (jugada, colorJugada):
-    movOriRow=letras[jugada[0]]
+    movOriRow=letras[jugada[0].upper()]
     movOriCol=int(jugada[1])-1
-    movDesRow=letras[jugada[2]]
+    movDesRow=letras[jugada[2].upper()]
     movDesCol=int(jugada[3])-1
 
     fichaOrigen = tablero[movOriRow][movOriCol]
+    print 'Imprimo la ficha origen ' + fichaOrigen
+
     fichaDestino = tablero [movDesRow][movDesCol]
+    print 'Imprimo la ficha destino ' + fichaDestino
+
 
     if fichaDestino == '-':
         tablero[movDesRow][movDesCol] = fichaOrigen
