@@ -38,6 +38,7 @@ def convertirMovimientos(mov):
 
 
 
+
 print (listaA)
 print (listaB)
 
