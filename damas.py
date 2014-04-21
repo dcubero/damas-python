@@ -18,15 +18,13 @@ tablero = [['-', 'n', '-', 'n', '-', 'n', '-', 'n'],
            ['-', 'n', '-', 'n', '-', 'n', '-', 'n'],
            ['-', '-', '-', '-', '-', '-', '-', '-'],
            ['-', '-', '-', '-', '-', '-', '-', '-'],
-           ['b', '-', 'b', '-', 'b', '-', 'b', '-'],
+           ['b', '-', 'B', '-', 'b', '-', 'b', '-'],
            ['-', 'b', '-', 'b', '-', 'b', '-', 'b'],
            ['b', '-', 'b', '-', 'b', '-', 'b', '-']]
 
 letras = {"A": 0, "B": 1, "C": 2, "D": 3, "E": 4, "F": 5, "G": 6, "H": 7}
 movimientoValido = True
 jugador = 'n'
-
-
 
 
 #Definicion de metodos y funciones
@@ -65,15 +63,47 @@ def moValido(jugada, colorJugador):
 
         ficha = tablero[movOriRow][movOriCol]
 
-        if ficha != colorJugador:
+        if ficha.lower() != colorJugador:
             print numero + 6
             return False
 
         if (ficha == 'N') or (ficha == 'B'):
-
             #Logica de la dama
-            return True
+            numCasillas = abs (movOriCol - movDesCol)
+
+            if numCasillas == abs (movOriRow - movDesRow):
+
+                for i in range(numCasillas):
+
+                    if movDesRow < movOriRow:
+                        movInterRow = movOriRow - (i + 1)
+
+                        if movDesCol < movOriCol:
+                            movInterCol = movOriCol - (i + 1)
+
+                        else:
+                            movInterCol = movOriCol + (i + 1)
+
+                    else:
+                        movInterRow = movOriRow + (i + 1)
+
+                        if movDesCol < movOriCol:
+                            movInterCol = movOriCol - (i + 1)
+
+                        else:
+                            movInterCol = movOriCol + (i + 1)
+
+                    if (tablero[movInterRow][movInterCol] != '-'):
+                        return False
+
+                return True
+
+            else:
+                return  False
+
+
         else:
+            #Logica de las fichas
             #Jugada adyacente
             if ((movDesRow == movOriRow + 1 and movDesCol == movOriCol + 1) or
                     (movDesRow == movOriRow + 1 and movDesCol == movOriCol - 1) or
@@ -83,8 +113,11 @@ def moValido(jugada, colorJugador):
                 fichaDestino = tablero[movDesRow][movDesCol]
 
                 if fichaDestino == ficha:
-
                     print numero + 7
+                    return False
+
+                elif (fichaDestino != '-') and (movDesCol == 0 or movDesCol == 7 or
+                    movDesRow == 0 or movDesRow == 7):
                     return False
 
                 return True
@@ -114,7 +147,9 @@ def moverFicha (jugada, colorJugada):
         tablero[movOriRow][movOriCol] = '-'
         coordenadasFicha = str(movDesRow)+str(movDesCol)
 
-    elif fichaDestino != colorJugada or fichaDestino != colorJugada.upper():
+    elif fichaDestino.lower() != colorJugada:
+
+
         tablero[movOriRow][movOriCol] = '-'
         tablero[movDesRow][movDesCol] = '-'
         if movDesRow < movOriRow:
@@ -140,6 +175,9 @@ def moverFicha (jugada, colorJugada):
 
 
 print 'Bienvenidos al juego de las damas'
+
+print '\n'
+
 print tablero[7]
 print tablero[6]
 print tablero[5]
@@ -149,8 +187,6 @@ print tablero[2]
 print tablero[1]
 print tablero[0]
 
-
-print '\n'
 
 while movimientoValido:
 
