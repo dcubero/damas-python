@@ -35,19 +35,19 @@ def moValido(jugada, colorJugador):
     numero = 0
 
     if jugada[0].upper() not in letras:
-        print numero + 1
+        #print numero + 1
         return False
 
     elif jugada[2].upper() not in letras:
-        print numero + 2
+        #print numero + 2
         return False
 
     elif int (jugada[1]) > 8 or int (jugada[1]) < 1:
-        print numero + 3
+        #print numero + 3
         return False
 
     elif int (jugada[3]) > 8 or int (jugada[3]) < 1:
-        print numero + 4
+        #print numero + 4
         return False
 
 
@@ -126,6 +126,9 @@ def moValido(jugada, colorJugador):
                 return False
 
 def convertirDama(coordenadas, ficha):
+    """
+	Convierte la ficha a Reina
+	"""
 
     if (coordenadas[0] == '7') and (ficha == 'n'):
         tablero[int(coordenadas[0])][int(coordenadas[1])] = 'N'
@@ -133,6 +136,9 @@ def convertirDama(coordenadas, ficha):
         tablero[int(coordenadas[0])][int(coordenadas[1])] = 'B'
 
 def moverFicha (jugada, colorJugada):
+    """
+	Mueve la ficha y come solo una ficha
+	"""
     movOriRow=letras[jugada[0].upper()]
     movOriCol=int(jugada[1])-1
     movDesRow=letras[jugada[2].upper()]
@@ -146,7 +152,6 @@ def moverFicha (jugada, colorJugada):
         tablero[movDesRow][movDesCol] = fichaOrigen
         tablero[movOriRow][movOriCol] = '-'
         coordenadasFicha = str(movDesRow)+str(movDesCol)
-        return True
 
     elif fichaDestino.lower() != colorJugada:
 
@@ -186,6 +191,21 @@ def moverFicha (jugada, colorJugada):
     convertirDama(coordenadasFicha, fichaOrigen)
     return True
 
+def comprobarVictoria():
+    hayNegras = False
+    hayBlancas = False
+    for i in tablero:
+        for x in i:
+            if x.lower() == 'n':
+                hayNegras = True
+            elif x.lower() == 'b':
+                hayBlancas = True
+
+    if hayBlancas and hayNegras:
+        return False
+    else:
+        return True
+
 
 print 'Bienvenidos al juego de las damas'
 
@@ -224,6 +244,15 @@ while movimientoValido:
             print tablero[1]
             print tablero[0]
             movimientoValido = True
+
+            if comprobarVictoria():
+                if jugador == 'n':
+                    print '¡Ganan las Negras!'
+
+                else:
+                    print '¡Ganana las Blancas!'
+
+                movimientoValido = False
 
         else:
             movimientoValido = False
