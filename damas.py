@@ -13,12 +13,12 @@
 
 
 #Definicion de variables
-tablero = [['-', 'n', '-', 'n', '-', 'n', '-', 'n'],
-           ['n', '-', 'n', '-', 'n', '-', 'n', '-'],
+tablero = [['-', 'n', '-', 'b', '-', 'n', '-', 'n'],
+           ['n', '-', '-', '-', 'n', '-', 'n', '-'],
            ['-', 'n', '-', 'n', '-', 'n', '-', 'n'],
            ['-', '-', '-', '-', '-', '-', '-', '-'],
            ['-', '-', '-', '-', '-', '-', '-', '-'],
-           ['b', '-', 'B', '-', 'b', '-', 'b', '-'],
+           ['b', '-', 'b', '-', 'b', '-', 'b', '-'],
            ['-', 'b', '-', 'b', '-', 'b', '-', 'b'],
            ['b', '-', 'b', '-', 'b', '-', 'b', '-']]
 
@@ -68,7 +68,7 @@ def moValido(jugada, colorJugador):
             return False
 
         if (ficha == 'N') or (ficha == 'B'):
-            #Logica de la dama
+            #Logica de la Reina
             numCasillas = abs (movOriCol - movDesCol)
 
             if numCasillas == abs (movOriRow - movDesRow):
@@ -93,13 +93,13 @@ def moValido(jugada, colorJugador):
                         else:
                             movInterCol = movOriCol + (i + 1)
 
-                    if (tablero[movInterRow][movInterCol] != '-'):
+                    if tablero[movInterRow][movInterCol] == colorJugador:
                         return False
 
                 return True
 
             else:
-                return  False
+                return False
 
 
         else:
@@ -146,6 +146,7 @@ def moverFicha (jugada, colorJugada):
         tablero[movDesRow][movDesCol] = fichaOrigen
         tablero[movOriRow][movOriCol] = '-'
         coordenadasFicha = str(movDesRow)+str(movDesCol)
+        return True
 
     elif fichaDestino.lower() != colorJugada:
 
@@ -154,24 +155,36 @@ def moverFicha (jugada, colorJugada):
         tablero[movDesRow][movDesCol] = '-'
         if movDesRow < movOriRow:
             if movDesCol < movOriCol:
-                tablero[movDesRow - 1][movDesCol - 1] = fichaOrigen
-                coordenadasFicha = str(movDesRow - 1)+str(movDesCol - 1)
+                if tablero[movDesRow - 1][movDesCol - 1] == '-':
+                    tablero[movDesRow - 1][movDesCol - 1] = fichaOrigen
+                    coordenadasFicha = str(movDesRow - 1) + str(movDesCol - 1)
+                else:
+                    return False
 
             else:
-                tablero[movDesRow - 1][movDesCol + 1] = fichaOrigen
-                coordenadasFicha = str(movDesRow - 1)+str(movDesCol + 1)
+                if tablero[movDesRow - 1][movDesCol + 1] == '-':
+                    tablero[movDesRow - 1][movDesCol + 1] = fichaOrigen
+                    coordenadasFicha = str(movDesRow - 1) + str(movDesCol + 1)
+                else:
+                    return False
 
         else:
             if movDesCol < movOriCol:
-                tablero[movDesRow + 1][movDesCol - 1] = fichaOrigen
-                coordenadasFicha = str(movDesRow + 1)+str(movDesCol - 1)
+                if tablero[movDesRow + 1][movDesCol - 1] == '-':
+                    tablero[movDesRow + 1][movDesCol - 1] = fichaOrigen
+                    coordenadasFicha = str(movDesRow + 1) + str(movDesCol - 1)
+                else:
+                    return False
 
             else:
-                tablero[movDesRow + 1][movDesCol + 1] = fichaOrigen
-                coordenadasFicha = str(movDesRow + 1)+str(movDesCol + 1)
-
+                if tablero[movDesRow + 1][movDesCol + 1] == '-':
+                    tablero[movDesRow + 1][movDesCol + 1] = fichaOrigen
+                    coordenadasFicha = str(movDesRow + 1)+str(movDesCol + 1)
+                else:
+                    return False
     print 'Estas son las coordenadas de la ficha: '+coordenadasFicha
     convertirDama(coordenadasFicha, fichaOrigen)
+    return True
 
 
 print 'Bienvenidos al juego de las damas'
@@ -199,18 +212,22 @@ while movimientoValido:
         movimiento = raw_input('Mueven las negras: ')
 
 
-    if  moValido(movimiento, jugador):
-        movimientoValido = True
-        moverFicha(movimiento, jugador)
+    if moValido(movimiento, jugador):
 
-        print tablero[7]
-        print tablero[6]
-        print tablero[5]
-        print tablero[4]
-        print tablero[3]
-        print tablero[2]
-        print tablero[1]
-        print tablero[0]
+        if moverFicha(movimiento, jugador):
+            print tablero[7]
+            print tablero[6]
+            print tablero[5]
+            print tablero[4]
+            print tablero[3]
+            print tablero[2]
+            print tablero[1]
+            print tablero[0]
+            movimientoValido = True
+
+        else:
+            movimientoValido = False
+            print 'Movimiento no válido'
 
     else:
         movimientoValido = False
