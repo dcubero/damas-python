@@ -9,12 +9,12 @@
 #Daniel Díaz
 #
 #Descripcion:
-#Juego de las damas desarrollando en python
+#Juego de las damas desarrollado en python
 
 
 #Definicion de variables
-tablero = [['-', 'n', '-', 'b', '-', 'n', '-', 'n'],
-           ['n', '-', '-', '-', 'n', '-', 'n', '-'],
+tablero = [['-', 'n', '-', 'n', '-', 'n', '-', 'n'],
+           ['n', '-', 'n', '-', 'n', '-', 'n', '-'],
            ['-', 'n', '-', 'n', '-', 'n', '-', 'n'],
            ['-', '-', '-', '-', '-', '-', '-', '-'],
            ['-', '-', '-', '-', '-', '-', '-', '-'],
@@ -30,24 +30,22 @@ jugador = 'n'
 #Definicion de metodos y funciones
 def moValido(jugada, colorJugador):
     """
-	Comprueba si la jugada es valida
-	"""
-    numero = 0
-
+    Comprueba si la jugada es valida
+    """
     if jugada[0].upper() not in letras:
-        #print numero + 1
+        #print 1
         return False
 
     elif jugada[2].upper() not in letras:
-        #print numero + 2
+        #print 2
         return False
 
     elif int (jugada[1]) > 8 or int (jugada[1]) < 1:
-        #print numero + 3
+        #print 3
         return False
 
     elif int (jugada[3]) > 8 or int (jugada[3]) < 1:
-        #print numero + 4
+        #print 4
         return False
 
 
@@ -58,13 +56,13 @@ def moValido(jugada, colorJugador):
         movDesCol=int(jugada[3])-1
 
         if tablero[movOriRow][movOriCol] == 0:
-            print numero + 5
+            #print 5
             return False
 
         ficha = tablero[movOriRow][movOriCol]
 
         if ficha.lower() != colorJugador:
-            print numero + 6
+            #print 6
             return False
 
         if (ficha == 'N') or (ficha == 'B'):
@@ -93,7 +91,8 @@ def moValido(jugada, colorJugador):
                         else:
                             movInterCol = movOriCol + (i + 1)
 
-                    if tablero[movInterRow][movInterCol] == colorJugador:
+                    if ((tablero[movInterRow][movInterCol] != '-' and movInterCol != movDesCol and movInterRow != movDesRow)
+                        or (tablero[movDesRow][movDesCol] == colorJugador)):
                         return False
 
                 return True
@@ -113,7 +112,7 @@ def moValido(jugada, colorJugador):
                 fichaDestino = tablero[movDesRow][movDesCol]
 
                 if fichaDestino == ficha:
-                    print numero + 7
+                    #print 7
                     return False
 
                 elif (fichaDestino != '-') and (movDesCol == 0 or movDesCol == 7 or
@@ -127,8 +126,8 @@ def moValido(jugada, colorJugador):
 
 def convertirDama(coordenadas, ficha):
     """
-	Convierte la ficha a Reina
-	"""
+    Convierte la ficha a Reina
+    """
 
     if (coordenadas[0] == '7') and (ficha == 'n'):
         tablero[int(coordenadas[0])][int(coordenadas[1])] = 'N'
@@ -137,8 +136,8 @@ def convertirDama(coordenadas, ficha):
 
 def moverFicha (jugada, colorJugada):
     """
-	Mueve la ficha y come solo una ficha
-	"""
+    Mueve la ficha y come solo una ficha
+    """
     movOriRow=letras[jugada[0].upper()]
     movOriCol=int(jugada[1])-1
     movDesRow=letras[jugada[2].upper()]
@@ -187,11 +186,14 @@ def moverFicha (jugada, colorJugada):
                     coordenadasFicha = str(movDesRow + 1)+str(movDesCol + 1)
                 else:
                     return False
-    print 'Estas son las coordenadas de la ficha: '+coordenadasFicha
+    #print 'Estas son las coordenadas de la ficha: '+coordenadasFicha
     convertirDama(coordenadasFicha, fichaOrigen)
     return True
 
 def comprobarVictoria():
+    """
+    Comprueba si ha finalizado la partida
+    """
     hayNegras = False
     hayBlancas = False
     for i in tablero:
